@@ -1,4 +1,4 @@
-const byte WIDTH = 20;
+const byte WIDTH = 24;
 const byte HEIGHT = 16;
 
 const byte ACTIVATOR = 50;
@@ -17,6 +17,7 @@ unsigned long lastPrint = 0;
 
 void setup() {
   Serial.begin(57600);
+  Serial.println(F("Starting...."));
 
   for (i = 0; i < WIDTH * HEIGHT; i++) {
     result[i] = random(-127, 127);
@@ -66,12 +67,17 @@ void updateResult() {
   }
 }
 
-void loop() {
-  averageSolutions();
-  updateResult();
-  if (millis() - lastPrint > 2000) {
+void printsAndLed() {
+  if (millis() - lastPrint > 1000) {
     lastPrint = millis();
     Serial.println(lastPrint);
   }
+  digitalWrite(13, (millis() / 500) % 2);
+}
+
+void loop() {
+  averageSolutions();
+  updateResult();
+  printsAndLed();
 }
 
